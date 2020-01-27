@@ -28,6 +28,14 @@ public class GUI extends JFrame {
 
     private HashMap<ButtonModel, Integer> buttonMap = new HashMap<ButtonModel, Integer>();
 
+    private final double miniPreis = 2.5;
+    private final double kleinwagenPreis = 5;
+    private final double mittelklassePreis = 7;
+    private final double kombiPreis = 9;
+    private final double stundenPreis = 1.5;
+    private final double km100 = 0.45;
+    private final double kmUe100 = 0.25;
+
     public GUI() {
         super();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -43,51 +51,51 @@ public class GUI extends JFrame {
         Container cp = getContentPane();
         cp.setLayout(null);
 
-        mini.setBounds((int)(frameWidth * 0.1), 20, 100, 20);
+        mini.setBounds((int) (frameWidth * 0.1), 20, 100, 20);
         mini.setOpaque(false);
         cp.add(mini);
-        mittelklasse.setBounds((int)(frameWidth * 0.6), 20, 100, 20);
+        mittelklasse.setBounds((int) (frameWidth * 0.6), 20, 100, 20);
         mittelklasse.setOpaque(false);
         cp.add(mittelklasse);
-        kleinwagen.setBounds((int)(frameWidth * 0.1), 50, 100, 20);
+        kleinwagen.setBounds((int) (frameWidth * 0.1), 50, 100, 20);
         kleinwagen.setOpaque(false);
         cp.add(kleinwagen);
-        kombi.setBounds((int)(frameWidth * 0.6), 50, 100, 20);
+        kombi.setBounds((int) (frameWidth * 0.6), 50, 100, 20);
         kombi.setOpaque(false);
         cp.add(kombi);
-        streckeLabel.setBounds((int)(frameWidth * 0.1), 80, 110, 20);
+        streckeLabel.setBounds((int) (frameWidth * 0.1), 80, 110, 20);
         streckeLabel.setText("Strecke");
         cp.add(streckeLabel);
-        streckeText.setBounds((int)(frameWidth * 0.25), 80, 75, 20);
+        streckeText.setBounds((int) (frameWidth * 0.25), 80, 75, 20);
         streckeText.setText("");
         cp.add(streckeText);
-        dauerLabel.setBounds((int)(frameWidth * 0.1), 110, 110, 20);
+        dauerLabel.setBounds((int) (frameWidth * 0.1), 110, 110, 20);
         dauerLabel.setText("Dauer");
         cp.add(dauerLabel);
-        dauerText.setBounds((int)(frameWidth * 0.25), 110, 75, 20);
+        dauerText.setBounds((int) (frameWidth * 0.25), 110, 75, 20);
         dauerText.setText("");
         cp.add(dauerText);
-        preisOut.setBounds((int)(frameWidth * 0.1), 170, 110, 20);
+        preisOut.setBounds((int) (frameWidth * 0.1), 170, 110, 20);
         preisOut.setText("Preis: n/a");
         cp.add(preisOut);
-        preisBerechnen.setBounds((int)(frameWidth * 0.1), 140, 120, 25);
+        preisBerechnen.setBounds((int) (frameWidth * 0.1), 140, 120, 25);
         preisBerechnen.setText("Preis berechnen");
         preisBerechnen.setMargin(new Insets(2, 2, 2, 2));
         preisBerechnen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 switch (buttonMap.get(buttonGroup.getSelection())) {
-                    case 1:
-                        System.out.println("Mini");
-                        break;
-                    case 2:
-                        System.out.println("Kleinwagen");
-                        break;
-                    case 3:
-                        System.out.println("Mittelklasse");
-                        break;
-                    case 4:
-                        System.out.println("Kombi");
-                        break;
+                case 1:
+                    calcAndSet(Double.parseDouble(streckeText.getText()), Double.parseDouble(dauerText.getText()), 1);
+                    break;
+                case 2:
+                    calcAndSet(Double.parseDouble(streckeText.getText()), Double.parseDouble(dauerText.getText()), 2);
+                    break;
+                case 3:
+                    calcAndSet(Double.parseDouble(streckeText.getText()), Double.parseDouble(dauerText.getText()), 3);
+                    break;
+                case 4:
+                    calcAndSet(Double.parseDouble(streckeText.getText()), Double.parseDouble(dauerText.getText()), 4);
+                    break;
                 }
             }
         });
@@ -102,6 +110,12 @@ public class GUI extends JFrame {
         cp.add(preisBerechnen);
 
         setVisible(true);
+    }
+
+    private void calcAndSet(double pStrecke, double pDauer, int klasse) {
+        double temp = klasse == 1 ? miniPreis
+                : klasse == 2 ? kleinwagenPreis : klasse == 3 ? mittelklassePreis : kombiPreis;
+        preisOut.setText("Preis: " + (temp + (pDauer * stundenPreis) + (pStrecke * (pStrecke > 100 ? kmUe100 : km100))));
     }
 
     public static void main(String[] args) {
