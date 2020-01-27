@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -23,6 +25,8 @@ public class GUI extends JFrame {
     private JLabel preisOut = new JLabel();
     private JButton preisBerechnen = new JButton();
     private ButtonGroup buttonGroup = new ButtonGroup();
+
+    private HashMap<ButtonModel, Integer> buttonMap = new HashMap<ButtonModel, Integer>();
 
     public GUI() {
         super();
@@ -71,13 +75,30 @@ public class GUI extends JFrame {
         preisBerechnen.setMargin(new Insets(2, 2, 2, 2));
         preisBerechnen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("Button pressed");
+                switch (buttonMap.get(buttonGroup.getSelection())) {
+                    case 1:
+                        System.out.println("Mini");
+                        break;
+                    case 2:
+                        System.out.println("Kleinwagen");
+                        break;
+                    case 3:
+                        System.out.println("Mittelklasse");
+                        break;
+                    case 4:
+                        System.out.println("Kombi");
+                        break;
+                }
             }
         });
         buttonGroup.add(mini);
+        buttonMap.put(mini.getModel(), 1);
         buttonGroup.add(mittelklasse);
+        buttonMap.put(mittelklasse.getModel(), 3);
         buttonGroup.add(kleinwagen);
+        buttonMap.put(kleinwagen.getModel(), 2);
         buttonGroup.add(kombi);
+        buttonMap.put(kombi.getModel(), 4);
         cp.add(preisBerechnen);
 
         setVisible(true);
